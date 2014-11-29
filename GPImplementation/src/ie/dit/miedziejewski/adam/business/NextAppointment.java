@@ -10,30 +10,24 @@ public class NextAppointment extends Patient
 	}
 	
 	public String getDateTime() {
-		// begin-user-code
-		// TODO Auto-generated method stub
 		return dateTime;
-		// end-user-code
 	}
 	
 	public boolean cancelAppointment() {
-		// begin-user-code
-		// TODO Auto-generated method stub
 		return false;
-		// end-user-code
 	}
 	
 	public boolean isBooked() {
-		// begin-user-code
-		// TODO Auto-generated method stub
-		return false;
-		// end-user-code
+		if (booked) {
+			return true;
+		}
+		else {
+			return false;
+		}	
 	}
 	
-	public String updateAppointment(String dateTime, boolean booked) {
-		// begin-user-code
-		// TODO Auto-generated method stub
-		return null;
-		// end-user-code
+	public void updateAppointment(String dateT, boolean book) {
+		this.dateTime = dateT;
+		this.booked = book;
 	}
 }

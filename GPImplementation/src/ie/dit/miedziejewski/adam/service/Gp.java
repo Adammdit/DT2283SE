@@ -8,45 +8,44 @@ import ie.dit.miedziejewski.adam.exceptions.DaoException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Set;
 
 public class Gp 
 {
-	private Set<Patient> patient;
 	private DAOImplementation dao = new DAOImplementation();
 	
-		
 	public boolean registerPatient(String first, String last, String address, int tel) {
 		
-		return true; //temporary
+		return true;
 	}
 
 	public String bookAppointment(String first, String last) throws DaoException {
-		
 		NextAppointment p = null;
+		String date = null;
 		try {			
 			p = dao.findPatient(first, last);
+			if (p == null) {
+				return "Patient not registered!!!";
+			}
 		} 
 		catch (DaoException e) {
 			e.printStackTrace();
 		}
-		System.out.println(p.booked);
-		if (!p.booked) {
-			String date = dao.findDateTimeAvailable();
 		
-			System.out.println("Gp: "+date);
+		// isBooked
+		if (!p.isBooked()) {
+			date = dao.findDateTimeAvailable();
 			date = addToDateTime(date, "MINUTES");
-			
-			System.out.println("Gp: "+date);
-			p.dateTime = date;
-			p.booked = true;
-			dao.updatePatient(p);
+			// updateAppointment
+			p.updateAppointment(date, true);
+			// fileAppointment
+			fileAppointment(p);
+			// updatePatient
+			dao.updatePatient(p);			
 		}
-		
-		
-		
-		
-		return "WORKING";
+		else {
+			return "Patient have booked appointment already!!!";
+		}
+		return p.firstName + " " + p.lastName + ": " + date;
 	}
 	
 	public static String addToDateTime(String timestampIn, String increment) {
@@ -85,29 +84,19 @@ public class Gp
 	    return timestampOut;
 	}
 	
-	
 	public boolean cancelAppointment(String first, String last) {
-		// begin-user-code
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public void fileAppointment(NextAppointment nextAppointment) {
-		// begin-user-code
-		// TODO Auto-generated method stub
-
-		// end-user-code
+	public void fileAppointment(NextAppointment nextAppointment) throws DaoException {
+		dao.fileAppointment(nextAppointment);
 	}
 
 	public Patient listAppointmentsForDate(String date) {
-		// begin-user-code
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String rescheduleAppointment(String name) {
-		// begin-user-code
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
